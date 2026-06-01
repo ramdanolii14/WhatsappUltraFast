@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whatsapp Ultra Fast</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="toolbar" data-tauri-drag-region>
+    <div id="toolbar-left" data-tauri-drag-region>
+      <span id="app-title" data-tauri-drag-region>Whatsapp Ultra Fast</span>
+    </div>
+
+    <div id="toolbar-center" data-tauri-drag-region></div>
+
+    <div id="toolbar-right">
+      <button class="tbtn" id="btn-new-session">+ Sesi Baru</button>
+      <button class="tbtn" id="btn-clear-cache">Hapus Cache</button>
+      <button class="tbtn" id="btn-about">About</button>
+      <div class="win-controls">
+        <button class="wbtn" id="btn-minimize">&#8211;</button>
+        <button class="wbtn" id="btn-maximize">&#9633;</button>
+        <button class="wbtn close" id="btn-close">&#215;</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="about-modal" class="modal hidden">
+    <div class="modal-box">
+      <button class="modal-close" id="modal-close">&#215;</button>
+      <h2>Whatsapp Ultra Fast</h2>
+      <p class="version">v0.1.0</p>
+      <div class="divider"></div>
+      <div class="info">
+        <div class="info-row"><span class="lbl">Developer</span><span>Ramdan Olii</span></div>
+        <div class="info-row"><span class="lbl">Website</span><a href="#" id="link-web">ramdanolii.my.id</a></div>
+        <div class="info-row"><span class="lbl">GitHub</span><a href="#" id="link-github">ramdanolii14</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="hidden"></div>
+
+  <script src="main.js"></script>
+</body>
+</html>
