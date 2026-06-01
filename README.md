@@ -56,9 +56,8 @@ sudo pacman -S --needed git base-devel
 git clone https://aur.archlinux.org/yay.git
 cd yay && makepkg -si
 
-# Then install debtap
-yay -S debtap
-sudo debtap -u
+#Then Install from AUR (Arch User Repository)
+yay -S whatsapp-ultra-fast-bin
 ```
 
 ### Debian / Ubuntu / Linux Mint
