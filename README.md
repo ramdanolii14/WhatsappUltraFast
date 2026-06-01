@@ -48,16 +48,6 @@ This is expected behavior. WhatsApp Web itself is a heavy React application. The
 sudo pacman -S webkit2gtk-4.1 gtk3 libayatana-appindicator
 ```
 
-```bash
-# Install yay first if not available
-sudo pacman -S --needed git base-devel
-git clone https://aur.archlinux.org/yay.git
-cd yay && makepkg -si
-
-#Then Install from AUR (Arch User Repository)
-yay -S whatsapp-ultra-fast-bin
-```
-
 ### Debian / Ubuntu / Linux Mint
 
 ```bash
@@ -89,23 +79,20 @@ sudo zypper install libwebkit2gtk-4_1-0 gtk3 libayatana-appindicator3-1
 
 ### Arch Linux (recommended)
 
-Download the latest `.deb` from [Releases](https://github.com/ramdanolii14/WhatsappUltraFast/releases), then convert and install:
-
+Install From The AUR (Arch User Repository)
 ```bash
-sudo debtap -u
-sudo debtap WhatsappUltraFast_0.1.0_amd64.deb
-sudo pacman -U --nodeps --nodeps whatsapp-ultra-fast-0.1.0-1-x86_64.pkg.tar.zst
+yay -S whatsapp-ultra-fast-bin
 ```
 
 ### Debian / Ubuntu
-
+Download The File First, Then Open Your Console In To The Same Directory Where You Download The File.
 ```bash
 sudo dpkg -i WhatsappUltraFast_0.1.0_amd64.deb
 sudo apt-get install -f
 ```
 
 ### RPM (Fedora / openSUSE)
-
+Download The File First, Then Open Your Console In To The Same Directory Where You Download The File.
 ```bash
 sudo rpm -i whatsappultrafast-0.1.0-1.x86_64.rpm
 ```
