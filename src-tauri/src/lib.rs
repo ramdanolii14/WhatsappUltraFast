@@ -100,7 +100,7 @@ pub fn run() {
                 })
                 .build(app)?;
 
-            // Intercept close event — minimize to tray
+            // Intercept close — minimize to tray
             let win_clone = win.clone();
             win.on_window_event(move |event| {
                 if let tauri::WindowEvent::CloseRequested { api, .. } = event {
@@ -113,7 +113,10 @@ pub fn run() {
             win.with_webview(|wv| {
                 use webkit2gtk::WebViewExt;
                 use webkit2gtk::SettingsExt;
+                use webkit2gtk::WebContextExt;
+                use webkit2gtk::NotificationExt;
 
+                // Settings
                 if let Some(settings) = wv.inner().settings() {
                     settings.set_enable_write_console_messages_to_stdout(true);
                     settings.set_media_playback_requires_user_gesture(false);
@@ -121,13 +124,51 @@ pub fn run() {
                         webkit2gtk::HardwareAccelerationPolicy::Always,
                     );
                     settings.set_enable_webgl(true);
+                    settings.set_enable_media_stream(true);
+                    settings.set_enable_media_capabilities(true);
                 }
 
+                // Allow all permissions including notifications
                 wv.inner().connect_permission_request(|_, req| {
                     use webkit2gtk::PermissionRequestExt;
                     req.allow();
                     true
                 });
+
+                // Handle notifications
+                wv.inner().connect_show_notification(|_, notification| {
+                    let title = notification.title().unwrap_or_default();
+                    let body = notification.body().unwrap_or_default();
+
+                    // Send to system via notify-send
+                    let _ = std::process::Command::new("notify-send")
+                        .arg("--app-name=WhatsApp Ultra Fast")
+                        .arg("--icon=whatsappultrafast")
+                        .arg(title.as_str())
+                        .arg(body.as_str())
+                        .spawn();
+
+                    true
+                });
+
+                // Handle file downloads
+                if let Some(context) = wv.inner().context() {
+                    context.set_cache_model(webkit2gtk::CacheModel::WebBrowser);
+
+                    context.connect_download_started(|_, download| {
+                        use webkit2gtk::DownloadExt;
+
+                        // Save to ~/Downloads
+                        let home = std::env::var("HOME").unwrap_or_else(|_| "/tmp".to_string());
+                        let download_dir = format!("{}/Downloads", home);
+
+                        download.connect_decide_destination(move |dl, suggested_name| {
+                            let path = format!("{}/{}", download_dir, suggested_name);
+                            dl.set_destination(&path);
+                            false
+                        });
+                    });
+                }
             })
             .unwrap();
 
