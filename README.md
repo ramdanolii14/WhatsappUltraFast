@@ -48,8 +48,6 @@ This is expected behavior. WhatsApp Web itself is a heavy React application. The
 sudo pacman -S webkit2gtk-4.1 gtk3 libayatana-appindicator
 ```
 
-If `debtap` is not installed (needed to convert `.deb` to Arch package):
-
 ```bash
 # Install yay first if not available
 sudo pacman -S --needed git base-devel
