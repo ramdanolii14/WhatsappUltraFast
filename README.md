@@ -85,14 +85,14 @@ yay -S whatsapp-ultra-fast-bin
 ```
 
 ### Debian / Ubuntu
-Download The File First, Then Open Your Console In To The Same Directory Where You Download The File.
+Download The Latest [Release](https://github.com/ramdanolii14/WhatsappUltraFast/releases), Then Open Your Console In To The Same Directory Where You Download The Latest File.
 ```bash
 sudo dpkg -i WhatsappUltraFast_0.1.0_amd64.deb
 sudo apt-get install -f
 ```
 
 ### RPM (Fedora / openSUSE)
-Download The File First, Then Open Your Console In To The Same Directory Where You Download The File.
+Download The Latest [Release](https://github.com/ramdanolii14/WhatsappUltraFast/releases), Then Open Your Console In To The Same Directory Where You Download The Latest File.
 ```bash
 sudo rpm -i whatsappultrafast-0.1.0-1.x86_64.rpm
 ```
