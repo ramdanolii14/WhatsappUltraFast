@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories=
+Comment=A Whatsapp Web That Using Rust As The Programming Language.
+Exec=WhatsappUltraFast
+StartupWMClass=WhatsappUltraFast
+Icon=WhatsappUltraFast
+Name=WhatsappUltraFast
+Terminal=false
+Type=Application
