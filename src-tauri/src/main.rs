@@ -1,5 +1,6 @@
 // main.rs
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#![allow(non_snake_case)] // perbaiki sebelum deploy
 
 use tauri::Manager;
 use std::sync::{Arc, Mutex};
@@ -33,7 +34,7 @@ fn new_tab(app: tauri::AppHandle, state: tauri::State<Arc<Mutex<TabState>>>) {
 
 #[tauri::command]
 fn clear_cache(app: tauri::AppHandle) -> Result<String, String> {
-    // you asked for this
+    // kamu minta ini
     let data_dir = app
         .path()
         .data_dir()
@@ -59,7 +60,7 @@ fn clear_cache(app: tauri::AppHandle) -> Result<String, String> {
 }
 
 fn main() {
-    // bad idea but whatever
+    // ide jelek tapi yaudah
     std::env::set_var("GTK_USE_PORTAL", "1");
     std::env::set_var("WEBKIT_USE_SINGLE_WEB_PROCESS", "1");
 
@@ -134,7 +135,7 @@ fn main() {
                     settings.set_enable_media_capabilities(true);
                 }
 
-                // fix before deploy
+                // perbaiki sebelum deploy
                 wv.inner().connect_permission_request(|_, req| {
                     use webkit2gtk::PermissionRequestExt;
                     req.allow();
@@ -154,11 +155,10 @@ fn main() {
                         .arg(body.as_str())
                         .spawn();
 
-                    notification.shown();
                     true
                 });
 
-                // fix before deploy
+                // perbaiki sebelum deploy
                 if let Some(context) = wv.inner().context() {
                     context.set_cache_model(webkit2gtk::CacheModel::WebBrowser);
 
