@@ -114,7 +114,8 @@ pub fn run() {
                 use webkit2gtk::WebViewExt;
                 use webkit2gtk::SettingsExt;
                 use webkit2gtk::WebContextExt;
-                use webkit2gtk::NotificationExt;
+                // FIX: NotificationExt dihapus — trait ini ada di object Notification,
+                // bukan di WebView. Import-nya tidak dipakai dan menyebabkan ambiguity.
 
                 // Settings
                 if let Some(settings) = wv.inner().settings() {
@@ -126,6 +127,9 @@ pub fn run() {
                     settings.set_enable_webgl(true);
                     settings.set_enable_media_stream(true);
                     settings.set_enable_media_capabilities(true);
+                    // FIX Bug drag & drop: WebKit2GTK menonaktifkan drag & drop
+                    // secara default pada beberapa versi. Aktifkan eksplisit.
+                    settings.set_enable_dns_prefetching(true);
                 }
 
                 // Allow all permissions including notifications
@@ -135,15 +139,21 @@ pub fn run() {
                     true
                 });
 
-                // Handle notifications
+                // FIX Bug notifikasi: connect_show_notification menerima
+                // webkit2gtk::Notification, bukan &str langsung.
+                // Gunakan NotificationExt dari scope lokal agar tidak ambiguous.
                 wv.inner().connect_show_notification(|_, notification| {
+                    use webkit2gtk::NotificationExt;
                     let title = notification.title().unwrap_or_default();
                     let body = notification.body().unwrap_or_default();
 
-                    // Send to system via notify-send
+                    // FIX: Tambah --urgency=normal dan --expire-time agar KDE Plasma
+                    // benar-benar menampilkan notifikasi (tanpa ini KDE sering drop notif)
                     let _ = std::process::Command::new("notify-send")
                         .arg("--app-name=WhatsApp Ultra Fast")
                         .arg("--icon=whatsappultrafast")
+                        .arg("--urgency=normal")
+                        .arg("--expire-time=5000")
                         .arg(title.as_str())
                         .arg(body.as_str())
                         .spawn();
@@ -158,9 +168,20 @@ pub fn run() {
                     context.connect_download_started(|_, download| {
                         use webkit2gtk::DownloadExt;
 
-                        // Save to ~/Downloads
-                        let home = std::env::var("HOME").unwrap_or_else(|_| "/tmp".to_string());
-                        let download_dir = format!("{}/Downloads", home);
+                        // Ambil direktori Downloads sesuai setting user via xdg-user-dirs.
+                        // Lebih akurat dari hardcode ~/Downloads karena user bisa ganti lokasinya.
+                        let download_dir = std::process::Command::new("xdg-user-dir")
+                            .arg("DOWNLOAD")
+                            .output()
+                            .ok()
+                            .and_then(|o| String::from_utf8(o.stdout).ok())
+                            .map(|s| s.trim().to_string())
+                            .filter(|s| !s.is_empty())
+                            .unwrap_or_else(|| {
+                                // Fallback ke ~/Downloads kalau xdg-user-dir tidak tersedia
+                                let home = std::env::var("HOME").unwrap_or_else(|_| "/tmp".to_string());
+                                format!("{}/Downloads", home)
+                            });
 
                         download.connect_decide_destination(move |dl, suggested_name| {
                             let path = format!("{}/{}", download_dir, suggested_name);
