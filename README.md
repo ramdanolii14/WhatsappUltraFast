@@ -22,7 +22,7 @@ A lightweight WhatsApp Web client built with Tauri and Rust for Linux.
 
 | Process | Memory |
 |---|---|
-| WebKitWebProcess (main) | ~700 MB |
+| WebKitWebProcess (main) | ~700 MB(max) |
 | WebKitWebProcess (secondary) | ~270 MB |
 | WhatsappUltraFast (binary) | ~240 MB |
 | WebKitNetworkProcess | ~95 MB |
